@@ -24,11 +24,11 @@ const server = HTTP.createServer((req, res) => {
       }
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ok:true}));
-      if(event == 'push'){
+      if(event == 'push'){ //开始部署
         let payload = JSON.parse(body);
         console.log("执行的文件名", payload.repository.name);
-        let child = spawn('sh',[`./${payload.repository.name}.sh`]);
         let bfs = [];
+        let child = spawn('sh',[`./${payload.repository.name}.sh`]);
         child.stdout.on('data',(buffer)=>{
           bfs.push(buffer);
         })
