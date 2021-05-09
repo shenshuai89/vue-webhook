@@ -32,7 +32,7 @@ const server = HTTP.createServer((req, res) => {
         child.stdout.on('data',(buffer)=>{
           bfs.push(buffer);
         })
-        child.stderr.on('end',(buffer) =>{
+        child.stdout.on('end',(buffer) =>{
           let log = Buffer.concat(bfs);
           console.log(log);
         })
