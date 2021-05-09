@@ -26,8 +26,8 @@ const server = HTTP.createServer((req, res) => {
       res.end(JSON.stringify({ok:true}));
       if(event == 'push'){
         let payload = JSON.parse(body);
-        console.log("执行的文件名",payload.repository.name);
-        let child = spawn('sh',[`./${payload.repository.name}.sh`])
+        console.log("执行的文件名", payload.repository.name);
+        let child = spawn('sh',[` ./${payload.repository.name}.sh`])
         let bfs = [];
         child.stdout.on('data',(buffer)=>{
           bfs.push(buffer);
