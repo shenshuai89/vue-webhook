@@ -28,11 +28,11 @@ const server = HTTP.createServer((req, res) => {
         let payload = JSON.parse(body);
         console.log("执行的文件名", payload.repository.name);
         let bfs = [];
-        let child = spawn('sh',[`./${payload.repository.name}.sh`]);
-        child.stdout.on('data',(buffer)=>{
+        let childProcess = spawn('sh',[`./${payload.repository.name}.sh`]);
+        childProcess.stdout.on('data',(buffer)=>{
           bfs.push(buffer);
         })
-        child.stdout.on('end',(buffer) =>{
+        childProcess.stdout.on('end',(buffer) =>{
           let log = Buffer.concat(bfs);
           console.log(log);
         })
