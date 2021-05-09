@@ -1,5 +1,6 @@
 const HTTP = require('http')
 const crypto = require('crypto')
+const { spawn } = require('child_process')
 const SECRET = '123456'
 function sign(body){
   return `sha1=`+crypto.createHmac('sha1',SECRET).update(body).digest('hex')
@@ -21,9 +22,22 @@ const server = HTTP.createServer((req, res) => {
       if(signature !== sign(body)){
         return res.end('Not Allowed');
       }
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ok:true}));
+      if(event == 'push'){
+        let payload = JSON.parse(body);
+        console.log("执行的文件名",payload.repository.name);
+        spawn('sh',[`./${payload.repository.name}.sh`])
+        let bfs = [];
+        child.stdout.on('data',(buffer)=>{
+          bfs.push(buffer);
+        })
+        child.stderr.on('end',(buffer) =>{
+          let log = Buffer.concat(bfs);
+          console.log(log);
+        })
+      }
     })
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ok:true}));
   }else{
     res.end('Not Found');
   }
