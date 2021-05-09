@@ -8,6 +8,8 @@ echo "拉取最新代码"
 git pull origin main
 echo "编译"
 npm run build
+echo "停用被占用的端口"
+sudo fuser -k 80/tcp
 echo "开始构建"
 docker build -t vue-front:1.0.0 .
 echo "先停止旧容器并删除"
